@@ -21,6 +21,8 @@ function generateRandomNum (min, max) {
 	return Math.floor(Math.random() * max ) - min;
 }
 
+// create a timer and display it on screen as time-remaining
+
 // select question from QA obj
 // run this function after x amount of seconds
 function displayQuestion () {
@@ -54,7 +56,10 @@ function checkAnswer () {
 	}
 }
 
-displayQuestion();
+// run start function upon button click
+function start () {
+	setInterval(displayQuestion, 2000);
+}
 
 // upon button click, store selected answer into user answer and cross-check with answer key
 $('.options span').on('click', function () {
@@ -65,6 +70,6 @@ $('.options span').on('click', function () {
 		// at the last correct answr reveal, display score and ask player to play again WITHOUT refreshing the page
 })
 
-$('.test').on('click', displayQuestion);
+$('.start').on('click', start);
 
 });
