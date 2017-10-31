@@ -2,24 +2,39 @@
 var correct;
 var wrong;
 var questionAnswer = {
-	q1: ['Which color is the color of the sky?','blue','green','red','purple']
+	'What is the color of the sky?': ['blue','green','red','purple'],
+	'What kind of bonds does water have?':['covalent','hydrogen','ionic','oxygen'],
+	'Which is NOT a primary color?':['blue','yellow','green','red'],
+	'Which Hogwarts house did Harry Potter belong to?':['ravenclaw','hufflepuff','slytherin','gryffindor'],
+	'Which GoT house has the sigil of a Lion?':['Stark','Lannister','Baratheon','Targeryeon']
 }
 var currentQuestion;
 var answer;
-
+var asked = [];
 
 $(document).ready(function () {
 
+function generateRandomNum (min, max) {
+	return Math.floor(Math.random() * max ) - min;
+}
+
 // select question from QA obj
-// randomize answer options to buttons
-	// select button, set value attr equal to answer
 function displayQuestion () {
-	currentQuestion = questionAnswer.q1[0];
-	answer = questionAnswer.q1[1];
-	$('.option1 span').text(answer);
-	$('.option2 span').text(questionAnswer.q1[2]);
-	$('.option3 span').text(questionAnswer.q1[3]);
-	$('.option4 span').text(questionAnswer.q1[4]);
+	// select question only if it hasn't already been selected, then push to array of asked questions
+	// randomize which question is displayed
+	for (var key in questionAnswer) {
+		if (!asked.includes(key)) {
+			asked.push(key);
+			$('#current-question').text(key);
+			for (var i=0; i < questionAnswer[key].length; i++) {
+				$('.option' + [i] + ' span').text(questionAnswer[key][i]);
+			}
+			return;
+		}
+	}
+
+	// randomize answer options to buttons
+		// select button, set value attr equal to answer
 }
 
 $('.test').on('click', displayQuestion);
