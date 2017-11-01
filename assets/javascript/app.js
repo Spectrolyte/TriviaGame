@@ -1,75 +1,61 @@
 // variable declaration
-var correct =0 ;
+var correct = 0 ;
 var wrong = 0;
-var questionAnswer = {
-	'What is the color of the sky?': ['blue','green','red','purple'],
-	'What kind of bonds does water have?':['covalent','hydrogen','ionic','oxygen'],
-	'Which is NOT a primary color?':['bloo','yellow','purple','red'],
-	'Which Hogwarts house did Harry Potter belong to?':['ravenclaw','hufflepuff','slytherin','gryffindor'],
-	'Which GoT house has the sigil of a Lion?':['Stark','Lannister','Baratheon','Targeryeon']
-}
-var currentQuestion;
-var answerKey = ['blue','hydrogen','green','gryffindor','Lannister'];
-var asked = [];
 var userAnswer;
 
+// array of question-answer objects with question, possible answers, and the correct answer
+var questionAnswer = [
+
+	{question: 'What is the color of the sky?',
+	answers: ['blue','green','red','purple'],
+	correct: 'blue',
+	asked: false},
+	
+	{question: 'What kind of bonds does water have?',
+	answers: ['covalent','hydrogen','ionic','oxygen'],
+	correct: 'hydrogen',
+	asked: false},
+
+	{question: 'Which is NOT a primary color?',
+	answers: ['blue','yellow','purple','red'],
+	correct: 'purple',
+	asked: false},
+
+	{question: 'Which Hogwarts house did Harry Potter belong to?',
+	answers: ['ravenclaw','hufflepuff','slytherin','gryffindor'],
+	correct: 'gryffindor',
+	asked: false},
+
+	{question: 'Which GoT house has the sigil of a Lion?',
+	answers: ['Stark','Lannister','Baratheon','Targeryeon'],
+	correct: 'Lannister',
+	asked: false}
+];
+
 $(document).ready(function () {
-
-// consider putting function in an object
-
-function generateRandomNum (min, max) {
-	return Math.floor(Math.random() * max ) - min;
-}
-
-// create a timer and display it on screen as time-remaining
-
-// select question from QA obj
-// run this function after x amount of seconds
-function displayQuestion () {
-	// select question only if it hasn't already been selected, then push to array of asked questions
-	// randomize which question is displayed -- do this later
-	for (var key in questionAnswer) {
-		if (!asked.includes(key)) {
-			asked.push(key);
-			$('#current-question').text(key);
-			// select button, set value attr equal to answer
-			// display answer options
-			// randomize answer options to buttons -- do this later
-			for (var i=0; i < questionAnswer[key].length; i++) {
-				$('.option' + [i] + ' span').attr('value',questionAnswer[key][i]).text(questionAnswer[key][i]);
-			}
-			return;
-		}
-	}	
-}
-
-// scoring conditions
-// check user answer with answer bank
-function checkAnswer () {
-	// if selected correct answer, increment correct score by one
-	if (answerKey.includes(userAnswer)) {
-		correct++;
-		alert('correct');
-	} else {
-		wrong++;
-		alert('wrong');
+	// generate random number between min and max, inclusive
+	function getRandomNum (min, max) {
+		return Math.floor(Math.random() * max) - min;
 	}
-}
 
-// run start function upon button click
-function start () {
-	setInterval(displayQuestion, 2000);
-}
-
-// upon button click, store selected answer into user answer and cross-check with answer key
-$('.options span').on('click', function () {
-	userAnswer = $(this).attr('value');
-	checkAnswer();
-	// display correct answer
-	// dispaly next question
-		// at the last correct answr reveal, display score and ask player to play again WITHOUT refreshing the page
-})
-
-$('.start').on('click', start);
+	// upon starting the game, pick a random question from question-answer list
+	// run this function after the timer runs out for the correct-answer reveal
+	function displayQuestion () {
+		var picked = questionAnswer[getRandomNum(0, questionAnswer.length)];
+		var selectedQuestion = picked.question;
+		var correctAnswer = picked.correct;
+		var asked = picked.asked;
+		
+		// if question wasn't asked already,
+		if (!asked) {
+			// change asked to true;
+			picked.asked = true;
+			
+		}
+		else {
+			displayQuestion();
+		}
+	}
+	
 
 });
