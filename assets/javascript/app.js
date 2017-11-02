@@ -12,31 +12,36 @@ var questionAnswer = [
 	answers: ['Harry Potter','Hermoine Granger','Ron Weasley','Luna Lovegood'],
 	correct: 'Hermoine Granger',
 	asked: false,
-	image: 'assets/images/hermoine.gif'},
+	image: 'assets/images/hermoine.gif',
+	text: 'Although Hermoine Granger was Muggle-born, she is one of the brightest witches in Hogwarts.'},
 	
 	{question: 'What is the real name of Voldemort?',
 	answers: ['Albus Dumbledore','Morte Donovan','Salazar Serpient','Tom Riddle'],
 	correct: 'Tom Riddle',
 	asked: false,
-	image: 'assets/images/voldemort.gif'},
+	image: 'assets/images/voldemort.gif',
+	text: 'Lord Voldemort\'s real name is Tom Riddle, also known as the Half-Blood Prince.'},
 
 	{question: 'What was the name of the three-headed dog at guarded the Philosopher\'s Stone?',
 	answers: ['Fluffy','Benjamin','Cerberus','Olly'],
 	correct: 'Fluffy',
 	asked: false,
-	image: 'assets/images/fluffy.gif'},
+	image: 'assets/images/fluffy.gif',
+	text: 'Cute name, scary dog.'},
 
 	{question: 'Which Hogwarts house has the sigil of a serpent?',
 	answers: ['Ravenclaw','Hufflepuff','Slytherin','Gryffindor'],
 	correct: 'Slytherin',
 	asked: false,
-	image: 'assets/images/slytherin.gif'},
+	image: 'assets/images/slytherin.gif',
+	text: 'Slytherin\'s house sigil is of a serpent. Those snakes...'},
 
 	{question: 'What kind of Patronus protected Harry Potter against the dementors?',
 	answers: ['Eagle','Doe','Lion','Dragon'],
 	correct: 'Doe',
 	asked: false,
-	image: 'assets/images/doe.gif'}
+	image: 'assets/images/doe.gif',
+	text: 'The patronus that protected Harry Potter was in the shape of a doe. Bright and powerful.'}
 ];
 
 $(document).ready(function () {
@@ -67,6 +72,7 @@ $(document).ready(function () {
 		var asked = picked.asked;
 		// attach image to image div to reveal later
 		$('.img-gif').html('<img src="' + picked.image + '" >')
+		$('.description').text(picked.text);
 
 		show($('#time'));
 		show($('.question'));
@@ -75,6 +81,7 @@ $(document).ready(function () {
 		hide($('.img-gif'));
 		hide($('.answer'));
 		hide($('.user-choice'));
+		hide($('.description'));
 		
 		// if question wasn't asked already,
 		if (questionsAsked === questionAnswer.length) {
@@ -101,7 +108,7 @@ $(document).ready(function () {
 		}
 	}
 
-	// display the correct answer
+	/*// display the correct answer
 	function displayCorrectAnswer () {
 		// fade out buttons that are not the user's answer
 		for (var i=0; i < 4; i++) {
@@ -119,7 +126,7 @@ $(document).ready(function () {
 		show($('.user-choice'));
 
 	}
-
+*/
 	// check user-answer against the correct answer
 	function checkAnswer () {
 		userAnswer = $(this).attr('value');
@@ -147,14 +154,17 @@ $(document).ready(function () {
 		// fade out question
 		hide($('.question'));
 		// display picture or gif along with the correct answer
+		show($('.description'));
 		show($('.img-gif'));
 		show($('.answer'));
 		show($('.user-choice'));
+		show($('.description'));
 	}
 	
 	// click events
 	// click start game button to initiate game
 	$('.start').click(displayQuestionAnswers);
+
 	
 	// capture user-answer upon clicking a button
 	$('.options').click(checkAnswer);
