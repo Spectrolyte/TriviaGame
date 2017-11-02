@@ -1,9 +1,14 @@
 // variable declaration
 var correct = 0 ;
 var wrong = 0;
+var missed = 0;
 var userAnswer;
 var correctAnswer;
 var questionsAsked = 0;
+var gameStarted = false;
+
+var timeoutCorrectAnswer;
+var timeoutQuestionAnswer;
 
 // array of question-answer objects with question, possible answers, and the correct answer
 var questionAnswer = [
@@ -62,7 +67,6 @@ $(document).ready(function () {
 	// run this function after the timer runs out for the correct-answer reveal
 	// prevent running this function when there are no questions left
 	function displayQuestionAnswers () {
-		gameStarted = true;
 
 		var picked = questionAnswer[getRandomNum(0, questionAnswer.length)];
 		var selectedQuestion = picked.question;
@@ -129,27 +133,51 @@ $(document).ready(function () {
 
 	// check user-answer against the correct answer
 	function checkAnswer () {
+		clearTimeout(timeoutCorrectAnswer);
+		displayCorrectAnswer();
+
 		userAnswer = $(this).attr('value');
 
-		if (userAnswer === correctAnswer) {
+		if (!userAnswer) {
+			missed++;
+			$('.right-wrong').text('You didn\'t answer!');
+		}
+
+		else if (userAnswer === correctAnswer) {
 			correct++;
 			// display 'right' and correct answer page
-			$('.right-wrong').text('right');
+			$('.right-wrong').text('You\'re right!');
 			// display next question
 		}
 		else {
 			wrong++;
 			// display 'wrong' and correct answer page
-			$('.right-wrong').text('wrong');
+			$('.right-wrong').text('You\'re wrong...');
 			// display next question
 		}
 
-		displayCorrectAnswer();
+		play();
 	}
 	
 	// click events
 	// click start game button to initiate game
-	$('.start').click(displayQuestionAnswers);
+	$('.start').click(play);
+	// after starting the game, show question for 20 seconds
+	// if user answers before timer is up, increment wins or losses
+	// else, increment missed questions
+
+	function play () {
+		if (!gameStarted) {
+			gameStarted = true;
+			displayQuestionAnswers();
+			timeoutCorrectAnswer = setTimeout(displayCorrectAnswer, 1000 * 10);
+			setTimeout(displayCorrectAnswer, 1000 * 10)
+		}
+		else {
+			timeoutCorrectAnswer = setTimeout(displayCorrectAnswer, 1000 * 10);
+			timeoutQuestionAnswer = setTimeout(displayQuestionAnswers, 1000 * 10);
+		}
+	}
 
 	
 	// capture user-answer upon clicking a button
@@ -161,23 +189,6 @@ $(document).ready(function () {
 	hide($('.options'));
 	hide($('.answer'));
 	hide($('.user-choice'));
-
-	// show question, timer, and answer buttons after start button is clicked. hide start button
-		// this is done in displayQuestionAnswers function
-
-	// after answering a question or timer runs out,
-		// hide question, timer, and answer buttons
-		// display if user got it right or wrong, the correct answer, the button the user clicked, and an image
-
-	// user has 20 seconds to answer the question
-	// show user correct answer for 5 seconds
-
-	/*if (gameStarted && !displayingCorrectAnswer ) {
-		setTimeout(displayQuestionAnswers, 1000 * 20);
-	}
-	else if (gameStarted && displayingCorrectAnswer) {
-		setTimeout(displayCorrectAnswer, 1000 * 5);
-	}*/
 
 
 
