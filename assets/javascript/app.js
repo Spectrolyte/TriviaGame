@@ -33,7 +33,7 @@ var questionAnswer = [
 	correct: 'Fluffy',
 	asked: false,
 	image: 'assets/images/fluffy.gif',
-	text: 'Cute name, scary dog.'},
+	text: 'Fluffy\'s a cute name, but this is a scary dog(s)??'},
 
 	{question: 'Which Hogwarts house has the sigil of a serpent?',
 	answers: ['Ravenclaw','Hufflepuff','Slytherin','Gryffindor'],
@@ -105,15 +105,15 @@ $(document).ready(function () {
 			// resets user answer to nothing just in case the user doesn't answer in time to trigger click event
 			userAnswer = '';
 		}
+		else if (questionsAsked === questionAnswer.length) {
+			//display stats, then return
+			showStats();
+			return;
+		}
 		else if (asked) {
 			// resets user answer to nothing just in case the user doesn't answer in time to trigger click event
 			userAnswer = '';
 			displayQuestionAnswers();
-		}
-		else if (questionsAsked === questionAnswer.length) {
-			//display stats, then return
-			console.log('done');
-			return;
 		}
 	}
 
@@ -193,6 +193,18 @@ $(document).ready(function () {
 		}
 	}
 
+	function showStats () {
+		$('#correct').text(correct);
+		$('#wrong').text(wrong);
+		$('#missed').text(missed);
+		hide($('#time'));
+		hide($('.question'));
+		hide($('.options'));
+		hide($('.answer'));
+		hide($('.user-choice'));
+		hide($('.stats'));
+		show($('.stats'));
+	}
 	
 	// capture user-answer upon clicking a button
 	$('.options').click(checkAnswer);
@@ -203,6 +215,7 @@ $(document).ready(function () {
 	hide($('.options'));
 	hide($('.answer'));
 	hide($('.user-choice'));
+	hide($('.stats'));
 
 
 
