@@ -3,6 +3,7 @@ var correct = 0 ;
 var wrong = 0;
 var userAnswer;
 var correctAnswer;
+var questionsAsked = 0;
 
 // array of question-answer objects with question, possible answers, and the correct answer
 var questionAnswer = [
@@ -10,40 +11,35 @@ var questionAnswer = [
 	{question: 'Which character was Muggle-born?',
 	answers: ['Harry Potter','Hermoine Granger','Ron Weasley','Luna Lovegood'],
 	correct: 'Hermoine Granger',
-	asked: false
-	image: /*insert url here*/},
+	asked: false,
+	image: 'assets/images/hermoine.gif'},
 	
 	{question: 'What is the real name of Voldemort?',
 	answers: ['Albus Dumbledore','Morte Donovan','Salazar Serpient','Tom Riddle'],
 	correct: 'Tom Riddle',
-	asked: false
-	image: /*insert url here*/},
+	asked: false,
+	image: 'assets/images/voldemort.gif'},
 
 	{question: 'What was the name of the three-headed dog at guarded the Philosopher\'s Stone?',
 	answers: ['Fluffy','Benjamin','Cerberus','Olly'],
 	correct: 'Fluffy',
-	asked: false
-	image: /*insert url here*/},
+	asked: false,
+	image: 'assets/images/fluffy.gif'},
 
 	{question: 'Which Hogwarts house has the sigil of a serpent?',
 	answers: ['Ravenclaw','Hufflepuff','Slytherin','Gryffindor'],
 	correct: 'Slytherin',
-	asked: false
-	image: /*insert url here*/},
+	asked: false,
+	image: 'assets/images/slytherin.gif'},
 
 	{question: 'What kind of Patronus protected Harry Potter against the dementors?',
 	answers: ['Eagle','Doe','Lion','Dragon'],
 	correct: 'Doe',
-	asked: false
-	image: /*insert url here*/}
+	asked: false,
+	image: 'assets/images/doe.gif'}
 ];
 
 $(document).ready(function () {
-	// click events
-		// click start game button to initiate game
-		$('.start').click(displayQuestionAnswers);
-		// capture user-answer upon clicking a button
-		$('.options').click(checkAnswer);
 
 	function hide (section) {
 		$(section).hide();
@@ -53,13 +49,6 @@ $(document).ready(function () {
 		$(section).show();
 	}
 
-	// hide question, timer, and answer buttons upon page load
-	// show question, timer, and answer buttons after start button is clicked. hide start button
-	// after answering a question or timer runs out,
-		// hide question, timer, and answer buttons
-		// display if user got it right or wrong, the correct answer, the button the user clicked, and an image
-
-	// generate random number between min and max, inclusive
 	function getRandomNum (min, max) {
 		return Math.floor(Math.random() * max) - min;
 	}
@@ -68,15 +57,33 @@ $(document).ready(function () {
 	// run this function after the timer runs out for the correct-answer reveal
 	// prevent running this function when there are no questions left
 	function displayQuestionAnswers () {
+		gameStarted = true;
+		displayCorrectAnswer = false;
+
 		var picked = questionAnswer[getRandomNum(0, questionAnswer.length)];
 		var selectedQuestion = picked.question;
 		var answerChoices = picked.answers;
 		correctAnswer = picked.correct;
 		var asked = picked.asked;
+		// attach image to image div to reveal later
+		$('.img-gif').html('<img src="' + picked.image + '" >')
+
+		show($('#time'));
+		show($('.question'));
+		show($('.options'));
+		hide($('.start'));
+		hide($('.img-gif'));
+		hide($('.answer'));
+		hide($('.user-choice'));
 		
 		// if question wasn't asked already,
-		if (!asked) {
+		if (questionsAsked === questionAnswer.length) {
+			//display stats
+			console.log('done');
+		}
+		else if (!asked) {
 			// change asked to true;
+			questionsAsked++;
 			picked.asked = true;
 			// show question
 			$('#current-question').text(selectedQuestion);
@@ -103,9 +110,14 @@ $(document).ready(function () {
 			}
 		}
 		// fade out time remaining
-		hide($('.time'));
+		hide($('#time'));
 		// fade out question
+		hide($('.question'));
 		// display picture or gif along with the correct answer
+		show($('.img-gif'));
+		show($('.answer'));
+		show($('.user-choice'));
+
 	}
 
 	// check user-answer against the correct answer
@@ -114,21 +126,62 @@ $(document).ready(function () {
 
 		if (userAnswer === correctAnswer) {
 			correct++;
-			$('.right-wrong').text('right');
 			// display 'right' and correct answer page
+			$('.right-wrong').text('right');
 			// display next question
 		}
 		else {
 			wrong++;
-			$('.right-wrong').text('wrong');
 			// display 'wrong' and correct answer page
+			$('.right-wrong').text('wrong');
 			// display next question
 		}
+
+		for (var i=0; i < 4; i++) {
+			if ($('.option' + i).attr('value') !== userAnswer) {
+				hide($('.option' + i));
+			}
+		}
+		// fade out time remaining
+		hide($('#time'));
+		// fade out question
+		hide($('.question'));
+		// display picture or gif along with the correct answer
+		show($('.img-gif'));
+		show($('.answer'));
+		show($('.user-choice'));
 	}
 	
+	// click events
+	// click start game button to initiate game
+	$('.start').click(displayQuestionAnswers);
+	
+	// capture user-answer upon clicking a button
+	$('.options').click(checkAnswer);
 
+	// hide question, timer, and answer buttons upon page load
+	hide($('#time'));
+	hide($('.question'));
+	hide($('.options'));
+	hide($('.answer'));
+	hide($('.user-choice'));
 
+	// show question, timer, and answer buttons after start button is clicked. hide start button
+		// this is done in displayQuestionAnswers function
 
+	// after answering a question or timer runs out,
+		// hide question, timer, and answer buttons
+		// display if user got it right or wrong, the correct answer, the button the user clicked, and an image
+
+	// user has 20 seconds to answer the question
+	// show user correct answer for 5 seconds
+
+	/*if (gameStarted && !displayingCorrectAnswer ) {
+		setTimeout(displayQuestionAnswers, 1000 * 20);
+	}
+	else if (gameStarted && displayingCorrectAnswer) {
+		setTimeout(displayCorrectAnswer, 1000 * 5);
+	}*/
 
 
 
