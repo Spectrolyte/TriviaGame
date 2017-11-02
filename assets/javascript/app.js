@@ -63,7 +63,6 @@ $(document).ready(function () {
 	// prevent running this function when there are no questions left
 	function displayQuestionAnswers () {
 		gameStarted = true;
-		displayCorrectAnswer = false;
 
 		var picked = questionAnswer[getRandomNum(0, questionAnswer.length)];
 		var selectedQuestion = picked.question;
@@ -108,7 +107,7 @@ $(document).ready(function () {
 		}
 	}
 
-	/*// display the correct answer
+	// display the correct answer
 	function displayCorrectAnswer () {
 		// fade out buttons that are not the user's answer
 		for (var i=0; i < 4; i++) {
@@ -124,9 +123,10 @@ $(document).ready(function () {
 		show($('.img-gif'));
 		show($('.answer'));
 		show($('.user-choice'));
+		show($('.description'));
 
 	}
-*/
+
 	// check user-answer against the correct answer
 	function checkAnswer () {
 		userAnswer = $(this).attr('value');
@@ -144,21 +144,7 @@ $(document).ready(function () {
 			// display next question
 		}
 
-		for (var i=0; i < 4; i++) {
-			if ($('.option' + i).attr('value') !== userAnswer) {
-				hide($('.option' + i));
-			}
-		}
-		// fade out time remaining
-		hide($('#time'));
-		// fade out question
-		hide($('.question'));
-		// display picture or gif along with the correct answer
-		show($('.description'));
-		show($('.img-gif'));
-		show($('.answer'));
-		show($('.user-choice'));
-		show($('.description'));
+		displayCorrectAnswer();
 	}
 	
 	// click events
