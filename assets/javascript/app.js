@@ -9,6 +9,7 @@ var gameStarted = false;
 
 var timeoutCorrectAnswer;
 var timeoutQuestionAnswer;
+var timeoutCheckAnswer;
 
 // array of question-answer objects with question, possible answers, and the correct answer
 var questionAnswer = [
@@ -87,11 +88,7 @@ $(document).ready(function () {
 		hide($('.description'));
 		
 		// if question wasn't asked already,
-		if (questionsAsked === questionAnswer.length) {
-			//display stats
-			console.log('done');
-		}
-		else if (!asked) {
+		if (!asked) {
 			// change asked to true;
 			questionsAsked++;
 			picked.asked = true;
@@ -105,9 +102,18 @@ $(document).ready(function () {
 				var answer = answerChoices[i];
 				$('.option' + i).attr('value', answer).text(answer);
 			}
+			// resets user answer to nothing just in case the user doesn't answer in time to trigger click event
+			userAnswer = '';
 		}
-		else {
+		else if (asked) {
+			// resets user answer to nothing just in case the user doesn't answer in time to trigger click event
+			userAnswer = '';
 			displayQuestionAnswers();
+		}
+		else if (questionsAsked === questionAnswer.length) {
+			//display stats, then return
+			console.log('done');
+			return;
 		}
 	}
 
@@ -133,14 +139,18 @@ $(document).ready(function () {
 
 	// check user-answer against the correct answer
 	function checkAnswer () {
-		clearTimeout(timeoutCorrectAnswer);
+		// stops timer on displaying the correct answer and shows the correct answer right away
+		clearTimeout(timeoutCheckAnswer);
+		clearTimeout(timeoutQuestionAnswer);
 		displayCorrectAnswer();
 
+		// captures user answer
 		userAnswer = $(this).attr('value');
 
 		if (!userAnswer) {
 			missed++;
 			$('.right-wrong').text('You didn\'t answer!');
+			play();
 		}
 
 		else if (userAnswer === correctAnswer) {
@@ -148,15 +158,15 @@ $(document).ready(function () {
 			// display 'right' and correct answer page
 			$('.right-wrong').text('You\'re right!');
 			// display next question
+			play();
 		}
 		else {
 			wrong++;
 			// display 'wrong' and correct answer page
 			$('.right-wrong').text('You\'re wrong...');
 			// display next question
+			play();
 		}
-
-		play();
 	}
 	
 	// click events
@@ -170,12 +180,16 @@ $(document).ready(function () {
 		if (!gameStarted) {
 			gameStarted = true;
 			displayQuestionAnswers();
-			timeoutCorrectAnswer = setTimeout(displayCorrectAnswer, 1000 * 10);
-			setTimeout(displayCorrectAnswer, 1000 * 10)
+			timeoutCheckAnswer = setTimeout(checkAnswer, 1000 * 5);
+			
 		}
 		else {
-			timeoutCorrectAnswer = setTimeout(displayCorrectAnswer, 1000 * 10);
-			timeoutQuestionAnswer = setTimeout(displayQuestionAnswers, 1000 * 10);
+			// show correct answer for 5 seconds before displaying the next question
+			timeoutQuestionAnswer = setTimeout(displayQuestionAnswers, 1000 * 5);
+	
+			// user has 15 seconds to answer the question
+			timeoutCheckAnswer = setTimeout(checkAnswer, 1000 * 15);
+			
 		}
 	}
 
