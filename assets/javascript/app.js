@@ -6,9 +6,11 @@ var userAnswer;
 var correctAnswer;
 var questionsAsked = 0;
 var gameStarted = false;
+var timeLeft = 10;
 
 var timeoutQuestionAnswer;
 var timeoutCheckAnswer;
+var timeoutDecrement;
 
 // array of question-answer objects with question, possible answers, and the correct answer
 var questionAnswer = [
@@ -63,6 +65,11 @@ $(document).ready(function () {
 		return Math.floor(Math.random() * max) - min;
 	}
 
+	function decrement () {
+		timeLeft--;
+		$('#time-remaining').text(timeLeft);
+	}
+
 	// upon starting the game or selecting an answer before time is up, pick a random question from question-answer list
 	// run this function after the timer runs out for the correct-answer reveal
 	// prevent running this function when there are no questions left
@@ -73,6 +80,7 @@ $(document).ready(function () {
 		var answerChoices = picked.answers;
 		correctAnswer = picked.correct;
 		var asked = picked.asked;
+
 		// attach image to image div to reveal later
 		$('.img-gif').html('<img src="' + picked.image + '" >')
 		$('.description').text(picked.text);
@@ -141,6 +149,8 @@ $(document).ready(function () {
 		// stops timer on displaying the correct answer and shows the correct answer right away
 		clearTimeout(timeoutCheckAnswer);
 		clearTimeout(timeoutQuestionAnswer);
+		clearInterval(timeoutDecrement);
+		timeLeft = 15;
 		displayCorrectAnswer();
 
 		// captures user answer
@@ -172,15 +182,20 @@ $(document).ready(function () {
 		if (!gameStarted) {
 			gameStarted = true;
 			displayQuestionAnswers();
-			timeoutCheckAnswer = setTimeout(checkAnswer, 1000 * 5);
-			
+			// user has 10 seconds to answer the question
+			timeoutCheckAnswer = setTimeout(checkAnswer, 1000 * 10);
+			//decrement
+			timeoutDecrement = setInterval(decrement, 1000);
 		}
 		else {
 			// show correct answer for 5 seconds before displaying the next question
 			timeoutQuestionAnswer = setTimeout(displayQuestionAnswers, 1000 * 5);
 	
-			// user has 15 seconds to answer the question
+			// user has 10 seconds to answer the question
 			timeoutCheckAnswer = setTimeout(checkAnswer, 1000 * 15);
+
+			//decrement
+			timeoutDecrement = setInterval(decrement, 1000);
 			
 		}
 	}
@@ -189,6 +204,7 @@ $(document).ready(function () {
 		// kill timers
 		clearTimeout(timeoutQuestionAnswer);
 		clearTimeout(timeoutCheckAnswer);
+		clearInterval(timeoutDecrement);
 		$('#correct').text(correct);
 		$('#wrong').text(wrong);
 		$('#missed').text(missed);
@@ -202,14 +218,18 @@ $(document).ready(function () {
 	}
 
 	function restart () {
+		// reset stats
 		gameStarted = false;
 		correct = 0;
 		wrong = 0;
 		missed = 0;
 		questionsAsked = 0;
+		timeLeft = 10;
+		// change each question to unasked
 		for (var i=0; i < questionAnswer.length; i++) {
 			questionAnswer[i].asked = false;
 		}
+		// hide stats and show start button
 		hide($('.stats'));
 		show($('.start'));
 
