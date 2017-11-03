@@ -7,7 +7,6 @@ var correctAnswer;
 var questionsAsked = 0;
 var gameStarted = false;
 
-var timeoutCorrectAnswer;
 var timeoutQuestionAnswer;
 var timeoutCheckAnswer;
 
@@ -168,13 +167,6 @@ $(document).ready(function () {
 			play();
 		}
 	}
-	
-	// click events
-	// click start game button to initiate game
-	$('.start').click(play);
-	// after starting the game, show question for 20 seconds
-	// if user answers before timer is up, increment wins or losses
-	// else, increment missed questions
 
 	function play () {
 		if (!gameStarted) {
@@ -194,6 +186,9 @@ $(document).ready(function () {
 	}
 
 	function showStats () {
+		// kill timers
+		clearTimeout(timeoutQuestionAnswer);
+		clearTimeout(timeoutCheckAnswer);
 		$('#correct').text(correct);
 		$('#wrong').text(wrong);
 		$('#missed').text(missed);
@@ -205,9 +200,28 @@ $(document).ready(function () {
 		hide($('.stats'));
 		show($('.stats'));
 	}
-	
+
+	function restart () {
+		gameStarted = false;
+		correct = 0;
+		wrong = 0;
+		missed = 0;
+		questionsAsked = 0;
+		for (var i=0; i < questionAnswer.length; i++) {
+			questionAnswer[i].asked = false;
+		}
+		hide($('.stats'));
+		show($('.start'));
+
+	}
+
+	// click events
+	// click start game button to initiate game
+	$('.start').click(play);
 	// capture user-answer upon clicking a button
 	$('.options').click(checkAnswer);
+	// click play again button to restart the game
+	$('.restart').click(restart);
 
 	// hide question, timer, and answer buttons upon page load
 	hide($('#time'));
