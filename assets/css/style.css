@@ -1,12 +1,18 @@
 body {
-
+	text-align: center;
+	background-image: url('http://www.powerpointhintergrund.com/uploads/old-parchment-background-2.jpeg');
 }
 
 .container {
 	font-family: 'Cardo', serif;
+	font-size: 20px;
+
 }
 
 .page-header {
 	font-family: 'Allura', cursive;
 	font-size: 100px;
+	color: white;
+	/*background-image: url('https://pre00.deviantart.net/6e24/th/pre/i/2015/026/c/8/hogwarts_by_llamllam-d8fhc01.jpg');*/
+	background: #611009;
 }

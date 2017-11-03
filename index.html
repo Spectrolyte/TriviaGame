@@ -18,17 +18,21 @@
 	<div class="container">
 		<!-- end-game stats -->
 		<div class="row stats">
-			<ul>
+			<div class="col-sm-12">
 				<h1>See how well you did:</h1>
-				<li>Correct: <span id="correct"></span></li>
-				<li>Wrong: <span id="wrong"></span></li>
-				<li>Missed: <span id="missed"></span></li>
+				<hr>
+				<h3>Correct: <span id="correct"></span></h3>
+				<h3>Wrong: <span id="wrong"></span></h3>
+				<h3>Missed: <span id="missed"></span></h3>
+				<hr>
 				<button class="btn btn-default restart" type="submit"><span>Play again?</span></button>
-			</ul>
+			</div>
 		</div>
 		<!-- right or wrong -->
 		<div class="row answer">
-			<h1><span class="right-wrong"></span></h1>
+			<div class="col-sm-12">
+				<h1><span class="right-wrong"></span></h1>
+			</div>
 		</div>
 		<!-- image -->
 		<div class="row img-gif">
@@ -36,23 +40,32 @@
 		</div>
 		<!-- time display -->
 		<div class="row time">
-			<h2 id="time">Time Remaining: <span id="time-remaining">10</span> seconds!</h2>
-			<button class="btn btn-default start" type="submit"><span>Start Game</span></button>
+			<div class="col-sm-12">
+				<h2 id="time">Time Remaining: <span id="time-remaining">10</span> seconds!</h2>
+				<p class="welcome">Welcome! Test your Harry Potter knowledge with this trivia game!</p>
+				<button class="btn btn-default start" type="submit"><span>Start Quiz</span></button>
+			</div>
 		</div>
 		<!-- current question -->
 		<div class="row question">
-			<h3 id="question">Question: <span id="current-question"></span></h3>
+			<div class="col-sm-12">
+				<h3 id="question">Question: <span id="current-question"></span></h3>
+			</div>
 		</div>
 		<div class="row">
-			<p class="description"></p>
+			<div class="col-sm-12">
+				<br>
+				<p class="description"></p>
+			</div>
 		</div>
 		<!-- answer choices -->
 		<div class="row">
-			<h4><span class="user-choice">You picked: </span></h4>
-			<button class="btn btn-default options option0" type="submit"><span>Button1</span></button>
-			<button class="btn btn-default options option1" type="submit"><span>Button2</span></button>
-			<button class="btn btn-default options option2" type="submit"><span>Button3</span></button>
-			<button class="btn btn-default options option3" type="submit"><span>Button4</span></button>
+			<div class="col-sm-12">
+				<button class="btn btn-default options option0" type="submit"><span>Button1</span></button>
+				<button class="btn btn-default options option1" type="submit"><span>Button2</span></button>
+				<button class="btn btn-default options option2" type="submit"><span>Button3</span></button>
+				<button class="btn btn-default options option3" type="submit"><span>Button4</span></button>
+			</div>
 		</div>
 	</div>
 	

@@ -29,7 +29,7 @@ var questionAnswer = [
 	image: 'assets/images/voldemort.gif',
 	text: 'Lord Voldemort\'s real name is Tom Riddle, also known as the Half-Blood Prince.'},
 
-	{question: 'What was the name of the three-headed dog at guarded the Philosopher\'s Stone?',
+	{question: 'What was the name of the three-headed dog that guarded the Philosopher\'s Stone?',
 	answers: ['Fluffy','Benjamin','Cerberus','Olly'],
 	correct: 'Fluffy',
 	asked: false,
@@ -82,13 +82,14 @@ $(document).ready(function () {
 		var asked = picked.asked;
 
 		// attach image to image div to reveal later
-		$('.img-gif').html('<img src="' + picked.image + '" >')
+		$('.img-gif').html('<br><img src="' + picked.image + '" ><br>');
 		$('.description').text(picked.text);
 
 		show($('#time'));
 		show($('.question'));
 		show($('.options'));
 		hide($('.start'));
+		hide($('.welcome'))
 		hide($('.img-gif'));
 		hide($('.answer'));
 		hide($('.user-choice'));
@@ -126,12 +127,9 @@ $(document).ready(function () {
 
 	// display the correct answer
 	function displayCorrectAnswer () {
-		// fade out buttons that are not the user's answer
-		for (var i=0; i < 4; i++) {
-			if ($('.option' + i).attr('value') !== userAnswer) {
-				hide($('.option' + i));
-			}
-		}
+		// hide answer buttons
+		hide($('.options'));
+		
 		// fade out time remaining
 		hide($('#time'));
 		// fade out question
@@ -139,7 +137,6 @@ $(document).ready(function () {
 		// display picture or gif along with the correct answer
 		show($('.img-gif'));
 		show($('.answer'));
-		show($('.user-choice'));
 		show($('.description'));
 
 	}
